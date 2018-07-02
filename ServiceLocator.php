@@ -9,9 +9,10 @@
  * @feature Derived classes can change the way of building method name in autoloading (overriding getFactoryMethodName method)
  */
 class ServiceLocator
+implements \ArrayAccess, \IteratorAggregate, \Countable
 {
 	/**
-	 * @var object[]
+	 * @var array
 	 */
 	private $services = [];
 
@@ -21,14 +22,27 @@ class ServiceLocator
 	private $factories = [];
 
 	/**
+	 * Checks if service is stored in the locator.
+	 *
+	 * Ignores any known rules to instantiate the service.
+	 *
+	 * @param string $id
+	 * @return boolean
+	 */
+	function isServiceLoaded($id) {
+		return isset($this->services[$id]);
+	}
+
+	/**
 	 * Check if service is accessible
 	 *
 	 * If the service is accessible it is instantiated in the background.
 	 *
-	 * @{inheritdoc}
+	 * @param string $id
+	 * @return boolean
 	 */
 	function hasService($id) {
-		if(isset($this->services[$id])) {
+		if($this->isServiceLoaded($id)) {
 			return true;
 		}
 		$service = $this->createService($id);
@@ -40,7 +54,9 @@ class ServiceLocator
 	}
 
 	/**
-	 * @{inheritdoc}
+	 * @param string $id
+	 * @return mixed
+	 * @throws \Exception if the service is not available
 	 */
 	function getService($id) {
 		if($this->hasService($id)) {
@@ -50,30 +66,54 @@ class ServiceLocator
 	}
 
 	/**
-	 * @param $id
-	 * @param $service
+	 * @param string $id
+	 * @param mixed $service
+	 * @return ServiceLocator
 	 */
 	function setService($id, $service) {
 		$this->services[$id] = $service;
+		return $this;
+	}
+
+	/**
+	 * Pushes the service to service locator and generates its identifier
+	 * @param object $service
+	 * @return string Returns identifier assigned to the service, which is it's class name.
+	 */
+	function addService($service) {
+		if(\is_object($service)) {
+			$id = \get_class($service);
+			$this->setService($id, $service);
+			return $id;
+		}
+		throw new \Exception('Only object services can be pushed to this ServiceLocator.');
 	}
 
 	/**
 	 * @param $id
+	 * @return ServiceLocator
 	 */
 	function removeService($id) {
 		unset($this->services[$id]);
+		return $this;
 	}
 
 	/**
-	 * @return object[]
+	 * Returns array of loaded services
+	 *
+	 * @return mixed[]
 	 */
 	function getServices() {
 		return $this->services;
 	}
 
 	/**
-	 * @param $id
-	 * @return object|null Returns null if no rule to instantiate the service is found
+	 * Creates the service through stored factories or own factory methods
+	 *
+	 * Override this method to implement any other means of service autoloading.
+	 *
+	 * @param string $id
+	 * @return mixed Returns null if no rule to instantiate the service is found
 	 */
 	function createService($id) {
 		if($this->hasFactory($id)) {
@@ -88,7 +128,11 @@ class ServiceLocator
 	}
 
 	/**
-	 * @param $id
+	 * Gets name of method used for service autoloading
+	 *
+	 * Extends this method to change the pattern for factory method names.
+	 *
+	 * @param string $id
 	 * @return string
 	 */
 	function getFactoryMethodName($id) {
@@ -114,16 +158,20 @@ class ServiceLocator
 	/**
 	 * @param $id
 	 * @param $factory callable
+	 * @return ServiceLocator
 	 */
 	function setFactory($id, callable $factory) {
 		$this->factories[$id] = $factory;
+		return $this;
 	}
 
 	/**
 	 * @param $id
+	 * @return ServiceLocator
 	 */
 	function removeFactory($id) {
 		unset($this->factories[$id]);
+		return $this;
 	}
 
 	/**
@@ -131,6 +179,60 @@ class ServiceLocator
 	 */
 	function getFactories() {
 		return $this->factories;
+	}
+
+	/**
+	 * @param $id
+	 * @return boolean
+	 */
+	function offsetExists($id) {
+		return $this->hasService($id);
+	}
+
+	/**
+	 * @param $id
+	 */
+	function offsetGet($id) {
+		return $this->getService($id);
+	}
+
+	/**
+	 * @param $id
+	 * @param $service
+	 * @return mixed Returns the service
+	 */
+	function offsetSet($id, $service) {
+		if($id === null) {
+			$this->addService($service);
+		} else {
+			$this->setService($id, $service);
+		}
+		return $service;
+	}
+
+	/**
+	 * @param $id
+	 */
+	function offsetUnset($id) {
+		return $this->removeService($id);
+	}
+
+	/**
+	 * Iterator over loaded services
+	 *
+	 * @return \Iterator
+	 */
+	function getIterator() {
+		return new \ArrayIterator($this->getServices());
+	}
+
+	/**
+	 * Counts loaded services
+	 *
+	 * @return int
+	 */
+	function count() {
+		return \count($this->getServices());
 	}
 }
 
