@@ -2,7 +2,7 @@
 
 namespace PhpX\CommandPattern;
 
-interface CommandInvokerInterface
+interface InvokerInterface
 {
 	/**
 	 * @param CommandInterface $command

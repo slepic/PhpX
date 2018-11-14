@@ -1,17 +1,17 @@
 <?php
 
-namespace PhpX\CommandPattern\ExecutionVisitor;
+namespace PhpX\CommandPattern\Execution;
 
 
 /**
- * Implementation of CommandInvokerInterface that allows visitin of execution process
+ * Implementation of InvokerInterface that allows visitin of execution process
  */
-class VisitableCommandInvoker implements CommandInvokerInterface
+class VisitableInvoker implements InvokerInterface
 {
 	private $visitor;
 	private $invoker;
 
-	public function __construct(VisitorInterface $visitor, CommandInvokerInterface $invoker)
+	public function __construct(VisitorInterface $visitor, InvokerInterface $invoker)
 	{
 		$this->visitor = $visitor;
 		$this->invoker = $invoker;

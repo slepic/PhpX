@@ -22,21 +22,21 @@ class LoggingVisitor implements CommandExecutionVistiorInterface
 		$this->errorLEvel = $errorLevel ?: LogLevel::ERROR;
 	}
 
-	public function start(CommandInterface $command, CommandInvokerInterface $invoker)
+	public function start(CommandInterface $command, InvokerInterface $invoker)
 	{
 		$message = $this->formatter->getStartMessage($command, $invoker);
 		$context = $this->formatter->getStartContext($command, $invoker);
 		$this->logger->log($this->startLevel, $message, $context);
 	}
 
-	public function success(CommandInterface $command, CommandInvokerInterface $invoker)
+	public function success(CommandInterface $command, InvokerInterface $invoker)
 	{
 		$message = $this->formatter->getSuccessMessage($command, $invoker);
 		$context = $this->formatter->getSuccessContext($command, $invoker);
 		$this->logger->log($this->successLevel, $message, $context);
 	}
 
-	public function error(Exception $error, CommandInterface $command, CommandInvokerInterface $invoker)
+	public function error(Exception $error, CommandInterface $command, InvokerInterface $invoker)
 	{
 		$message = $this->formatter->getErrorMessage($error, $command, $invoker);
 		$context = $this->formatter->getErrorContext($error, $command, $invoker);
