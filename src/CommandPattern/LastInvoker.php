@@ -2,7 +2,7 @@
 
 namespace PhpX\CommandPattern;
 
-class CommandInvoker implements CommandInvokerInterface
+class LastInvoker implements InvokerInterface
 {
 	public function executeCommand(CommandInterface $command)
 	{

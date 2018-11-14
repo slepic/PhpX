@@ -2,26 +2,26 @@
 
 namespace PhpX\CommandPattern\Undo;
 
-use PhpX\CommandPattern\CommandInvokerInterface;
-use PhpX\CommandPattern\CommandInvoker;
+use PhpX\CommandPattern\InvokerInterface;
+use PhpX\CommandPattern\LastInvoker;
 use PhpX\Collections\StackInterface;
 use PhpX\Collections\Stack;
 use PhpX\CommandPattern\Undo\UndoableInterface;
 use PhpX\CommandPattern\Undo\UndoableCommandInterface;
 
-class UndoCommandInvoker implements CommandInvokerInterface, UndoableInterface
+class UndoInvoker implements InvokerInterface, UndoableInterface
 {
 	private $invoker;
 	private $undoStack;
 
-	public function __construct(CommandInvokerInterface $invoker = null, StackInterface $undoStack = null)
+	public function __construct(InvokerInterface $invoker = null, StackInterface $undoStack = null)
 	{
-		$this->invoker = $invoker ?: new Invoker();
+		$this->invoker = $invoker ?: new LastInvoker();
 		$this->undoStack = $undoStack ?: new Stack();
 	}
 
 	/**
-	 * @return CommandInvokerInterface
+	 * @return InvokerInterface
 	 */
 	public function getInnerInvoker()
 	{
