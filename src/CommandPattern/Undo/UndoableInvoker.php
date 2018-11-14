@@ -2,6 +2,7 @@
 
 namespace PhpX\CommandPattern\Undo;
 
+use PhpX\CommandPattern\CommandInterface;
 use PhpX\CommandPattern\InvokerInterface;
 use PhpX\CommandPattern\LastInvoker;
 use PhpX\Collections\StackInterface;

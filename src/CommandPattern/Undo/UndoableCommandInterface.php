@@ -1,8 +1,10 @@
 <?php
 
-namespace PhpX\CommandPatter\Undo;
+namespace PhpX\CommandPattern\Undo;
 
-interface UndoableCommandInterface extends CommandInterface;
+use \PhpX\CommandPattern\CommandInterface;
+
+interface UndoableCommandInterface extends CommandInterface
 {
 	/**
 	 * @return CommandInterface
