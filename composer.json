@@ -1,9 +1,12 @@
 {
 	"autoload": {
 		"psr-4": {
-			"PhpX\\": "src/"
+			"PhpX\\": "src/",
+			"PhpX\\Tests\\": "tests/"
 		}
 	},
 	"require": {},
-	"require-dev": {}       
+	"require-dev": {
+		"phpunit/phpunit" : "*"
+	} 
 }
