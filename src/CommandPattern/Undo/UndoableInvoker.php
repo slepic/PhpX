@@ -47,7 +47,11 @@ class UndoableInvoker implements InvokerInterface, UndoableInterface
 	{
 		$this->invoker->executeCommand($command);
 		if($command instanceof UndoableCommandInterface) {
-			$this->undoStack->push($command->getUndoCommand());
+			$undoCommand = $command->getUndoCommand();
+			if(!$undoCommand instanceof CommandInterface) {
+				throw new UnexpectedTypeException($undoCommand, CommandInterface::class);
+			}
+			$this->undoStack->push($undoCommand);
 		}
 	}
 
