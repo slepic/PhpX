@@ -12,8 +12,16 @@ class StackTest extends TestCase
 	/**
 	 * @return Stack
 	 */
-	protected function createEmptyStack()
+	protected function createEmptyEmptiableInterfaceInstance()
 	{
 		return new Stack();
+	}
+	
+	/**
+	 * @return Stack
+	 */
+	protected function createNonEmptyEmptiableInterfaceInstance()
+	{
+		return new Stack(\range(1,10));
 	}
 }

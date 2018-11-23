@@ -9,12 +9,14 @@ namespace PhpX\Tests\Collections;
  */
 trait StackInterfaceTestTrait
 {
+	use EmptiableInterfaceTestTrait;
+
 	public function testStackInterface()
 	{
 		$testValue1 = \rand();
 		$testValue2 = $testValue1 + 1;
 
-		$stack = $this->createEmptyStack();
+		$stack = $this->createEmptyEmptiableInterfaceInstance();
 		$this->assertTrue($stack->isEmpty());
 
 		$stack->push($testValue1);
@@ -34,7 +36,7 @@ trait StackInterfaceTestTrait
 
 	public function testTopThrowsWhenStackIsEmpty()
 	{
-		$stack = $this->createEmptyStack();
+		$stack = $this->createEmptyEmptiableInterfaceInstance();
 		$this->assertTrue($stack->isEmpty());
 
 		$this->expectException(\Exception::class);
@@ -43,7 +45,7 @@ trait StackInterfaceTestTrait
 
 	public function testPopThrowsWhenStackIsEmpty()
 	{
-		$stack = $this->createEmptyStack();
+		$stack = $this->createEmptyEmptiableInterfaceInstance();
 		$this->assertTrue($stack->isEmpty());
 
 		$this->expectException(\Exception::class);

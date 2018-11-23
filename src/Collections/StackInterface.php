@@ -2,13 +2,11 @@
 
 namespace PhpX\Collections;
 
-interface StackInterface//<ValueType>
+/**
+ * StackInterface<ValueType>
+ */
+interface StackInterface extends EmptiableInterface
 {
-	/**
-	 * @return bool
-	 */
-	public function isEmpty();
-
 	/**
 	 * @return ValueType
 	 */
@@ -24,9 +22,4 @@ interface StackInterface//<ValueType>
 	 * @return void
 	 */
 	public function push($value);
-
-	/**
-	 * @return void
-	 */
-	public function clear();
 }
