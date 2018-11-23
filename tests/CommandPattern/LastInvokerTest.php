@@ -2,11 +2,14 @@
 
 namespace PhpX\Tests\CommandPattern;
 
+use \PHPUnit\Framework\TestCase;
 use \PhpX\CommandPattern\LastInvoker;
 
-class LastInvokerTest extends InvokerInterfaceTest
+class LastInvokerTest extends TestCase
 {
-	public function createInvoker()
+	use InvokerInterfaceTestTrait;
+
+	protected function createInvoker()
 	{
 		return new LastInvoker();
 	}

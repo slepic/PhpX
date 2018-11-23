@@ -5,7 +5,7 @@ namespace PhpX\Tests\Collections;
 /**
  * Use this trait to provide basic tests for your StackInterface implementation.
  *
- * Implement createEmptyStack() method that will return an empty stack!
+ * @method createEmptyStack() Implement this to create an empty stack instance of your implementation.
  */
 trait StackInterfaceTestTrait
 {
