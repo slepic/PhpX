@@ -2,7 +2,15 @@
 
 namespace PhpX\Collections;
 
-class Stack implements StackInterface
+use \Countable;
+use \IteratorAggregate;
+use \ArrayIterator;
+use \Exception as StackEmptyException;
+
+class Stack implements
+	StackInterface,
+	Countable,
+	IteratorAggregate
 {
 	private $data;
 
@@ -24,17 +32,33 @@ class Stack implements StackInterface
 
 	public function top()
 	{
+		if($this->isEmpty()) {
+			throw new StackEmptyException();
+		}
 		return \reset($this->data);
 	}
 
 	public function pop()
 	{
+		if($this->isEmpty()) {
+			throw new StackEmptyException();
+		}
 		return \array_shift($this->data);
 	}
 
 	public function push($value)
 	{
-		$this->data[] = $value;
+		\array_unshift($this->data, $value);
 		return $this;
+	}
+
+	public function count()
+	{
+		return \count($this->data);
+	}
+
+	public function getIterator()
+	{
+		return new ArrayIterator($this->data);
 	}
 }
