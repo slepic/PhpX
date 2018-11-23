@@ -2,13 +2,13 @@
 
 use \PHPUnit\Framework\TestCase;
 use \PhpX\Autoload\Autoloader;
-use \PhpX\Autoload\IClassLocator;
+use \PhpX\Autoload\ClassLocatorInterface;
 
 class AutoloaderTest extends TestCase
 {
 	public function testGetLocator()
 	{
-		$locator = $this->createMock(IClassLocator::class);
+		$locator = $this->createMock(ClassLocatorInterface::class);
 
 		$autoloader = new Autoloader($locator);
 		$this->assertSame($locator, $autoloader->getLocator());
@@ -19,7 +19,7 @@ class AutoloaderTest extends TestCase
 		$testClass = 'NonexistentNamespace\\NonexistentClass';
 		$this->assertFalse(\class_exists($testClass));
 
-		$locator = $this->createMock(IClassLocator::class);
+		$locator = $this->createMock(ClassLocatorInterface::class);
 		$locator->method('getClassFile')
 			->willReturn(null);
 
@@ -39,7 +39,7 @@ class AutoloaderTest extends TestCase
 		$testClass = 'NonexistentNamespace\\NonexistentClass';
 		$this->assertFalse(\class_exists($testClass));
 
-		$locator = $this->createMock(IClassLocator::class);
+		$locator = $this->createMock(ClassLocatorInterface::class);
 		$locator->method('getClassFile')
 			->willReturn($testFile);
 
@@ -60,7 +60,7 @@ class AutoloaderTest extends TestCase
 		$testClass = 'NonexistentNamespace\\NonexistentClass';
 		$this->assertFalse(\class_exists($testClass));
 
-		$locator = $this->createMock(IClassLocator::class);
+		$locator = $this->createMock(ClassLocatorInterface::class);
 		$locator->method('getClassFile')
 			->willReturn($testFile);
 
@@ -79,7 +79,7 @@ class AutoloaderTest extends TestCase
 		$testClass = 'NonexistentNamespace2\\NonexistentClass2';
 		$this->assertFalse(\class_exists($testClass));
 
-		$locator = $this->createMock(IClassLocator::class);
+		$locator = $this->createMock(ClassLocatorInterface::class);
 		$locator->method('getClassFile')
 			->willReturn(null);
 
@@ -99,7 +99,7 @@ class AutoloaderTest extends TestCase
 		$testClass = 'NonexistentNamespace2\\NonexistentClass2';
 		$this->assertFalse(\class_exists($testClass));
 
-		$locator = $this->createMock(IClassLocator::class);
+		$locator = $this->createMock(ClassLocatorInterface::class);
 		$locator->method('getClassFile')
 			->willReturn(null);
 

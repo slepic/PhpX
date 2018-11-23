@@ -7,24 +7,24 @@ namespace PhpX\Autoload;
  *
  * This is a wrapper for PHP spl_autoload_* functions.
  * The class offers method to register and unregister the autoloader and can work in various modes (@todo).
- * The file lookup logic is delegated to IClassLocator object.
+ * The file lookup logic is delegated to ClassLocatorInterface object.
  */
 class Autoloader
 {
 	/**
-	 * @vaar IClassLocator
+	 * @vaar ClassLocatorInterface
 	 */
 	private $locator;
 
 	/**
-	 * @param IClassLocator $locator
+	 * @param ClassLocatorInterface $locator
 	 */
-	function __construct(IClassLocator $locator) {
+	function __construct(ClassLocatorInterface $locator) {
 		$this->locator = $locator;
 	}
 
 	/**
-	 * @return IClassLocator
+	 * @return ClassLocatorInterface
 	 */
 	function getLocator() {
 		return $this->locator;

@@ -5,7 +5,7 @@ namespace PhpX\Autoload;
 /**
  * Used by Autoloader to locate files for classes
  */
-interface IClassLocator
+interface ClassLocatorInterface
 {
 	/**
 	 * Returns full path to php file containing given class.
