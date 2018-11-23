@@ -24,4 +24,9 @@ interface StackInterface//<ValueType>
 	 * @return void
 	 */
 	public function push($value);
+
+	/**
+	 * @return void
+	 */
+	public function clear();
 }
