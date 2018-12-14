@@ -14,5 +14,5 @@ interface ContainerInterface
 	 * @param string $serviceName
 	 * @return object
 	 */
-	public function get(string $serviceName): object;
+	public function get(string $serviceName);
 }

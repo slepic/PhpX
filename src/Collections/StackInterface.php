@@ -3,7 +3,7 @@
 namespace PhpX\Collections;
 
 /**
- * StackInterface<ValueType>
+ * @generic inteface StackInterface<ValueType> extends EmptiableInterface
  */
 interface StackInterface extends EmptiableInterface
 {

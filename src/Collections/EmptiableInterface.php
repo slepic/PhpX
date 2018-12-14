@@ -2,6 +2,9 @@
 
 namespace PhpX\Collections;
 
+/**
+ * Represents object that can be cleared off its contents.
+ */
 interface EmptiableInterface
 {
 	/**

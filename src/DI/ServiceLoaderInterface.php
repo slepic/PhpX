@@ -6,5 +6,5 @@ interface ServiceLoaderInterface
 {
 	public function canLoadService(string $serviceName): bool;
 
-	public function loadService(string $serviceName): object;
+	public function loadService(string $serviceName);
 }

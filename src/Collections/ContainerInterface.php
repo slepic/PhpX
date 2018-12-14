@@ -3,16 +3,18 @@
 namespace PhpX\Collections;
 
 /**
+ * @note Possibly alias for \Psr\Container\ContainerInterface
+ *
  * Generic:
- * interface MapInterface<KeyType, ValueType>
+ * interface ContainerInterface<KeyType, ValueType>
  */
-interface MapInterface
+interface ContainerInterface
 {
 	/**
 	 * @param KeyType $key
 	 * @return bool
 	 */
-	public function has($key): bool;
+	public function has($key);
 
 	/**
 	 * @param KeyType $key

@@ -2,27 +2,32 @@
 
 namespace PhpX\DI\Loaders;
 
-use PhpX\DI\ServiceLoaderInterface as ServiceLoader;
-use PhpX\DI\ContainerInterface as Container;
-use ArrayAccess;
+use PhpX\DI {
+	ServiceLoaderInterface as ServiceLoader,
+	ContainerInterface as Container,
+};
+use PhpX\Collections\MapInterface as Map;
 
 class CallbackArray implements ServiceLoader
 {
 	private $factories;
 
-	public function __construct(ArrayAccess $factories)
+	public function __construct(Map $factories)
 	{
 		$this->factories = $factories;
 	}
 
-	public function canLoadService($id)
+	public function canLoadService(string $id): bool
 	{
-		return isset($this->factories[$id]);
+		return $this->factories->has($id);
 	}
 
-	public function loadService($id, Container $container)
+	public function loadService($id, Container $container): object
 	{
-		$factory = $this->factories[$id];
+		$factory = $this->factories->get($id);
+		if(!is_callable($factory)) {
+			throw new RuntimeException("Factory for service '$id' is not a callback.");
+		}
 		return $factory($container);
 	}
 }

@@ -5,8 +5,8 @@ namespace PhpX\Tests\Collections;
 /**
  * Class using this trait must implement following methods:
  *
- * @method createEmptyEmptiableInterfaceInstace
- * @method createNonEmptyEmptiableInterfaceInstace
+ * @method createEmptyEmptiableInterfaceInstance
+ * @method createNonEmptyEmptiableInterfaceInstance
  */
 trait EmptiableInterfaceTestTrait
 {

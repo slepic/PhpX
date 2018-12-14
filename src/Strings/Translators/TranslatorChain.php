@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpX\Strings\Tranlators;
+namespace PhpX\Strings\Translators;
 
 use PhpX\Strings\TranslatorInterface as Translator;
 

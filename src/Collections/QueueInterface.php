@@ -2,13 +2,11 @@
 
 namespace PhpX\Collections;
 
-interface QueueInterface//<ValueType>
+/**
+ * @generic interface QueueInterface<ValueType> extends EmptiableInterface
+ */
+interface QueueInterface extends EmptiableInterface
 {
-	/**
-	 * @return bool
-	 */
-	public function isEmpty();
-
 	/**
 	 * @param ValueType $value
 	 * @return void
