@@ -2,11 +2,10 @@
 
 namespace PhpX\DI\Loaders;
 
-use PhpX\DI {
-	ServiceLoaderInterface as ServiceLoader,
-	ContainerInterface as Container,
-};
-use PhpX\Collections\MapInterface as Map;
+use PhpX\DI\ServiceLoaderInterface as ServiceLoader;
+use PhpX\DI\ContainerInterface as Container;
+use PhpX\Collections\ContainerInterface as Map;
+use PhpX\TypeHint\InvalidTypeException;
 
 class CallbackArray implements ServiceLoader
 {
@@ -26,7 +25,7 @@ class CallbackArray implements ServiceLoader
 	{
 		$factory = $this->factories->get($id);
 		if(!is_callable($factory)) {
-			throw new RuntimeException("Factory for service '$id' is not a callback.");
+			throw new InvalidTypeException("callback", $factory, 'service=' . $id);
 		}
 		return $factory($container);
 	}
