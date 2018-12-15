@@ -7,15 +7,14 @@ namespace PhpX\Collections;
  */
 interface QueueInterface extends EmptiableInterface
 {
-	/**
-	 * @param ValueType $value
-	 * @return void
-	 */
-	public function enqueue($value);
+    /**
+     * @param ValueType $value
+     * @return void
+     */
+    public function enqueue($value);
 
-	/**
-	 * @return ValueType
-	 */
-	public function dequeue();
+    /**
+     * @return ValueType
+     */
+    public function dequeue();
 }
-

@@ -7,8 +7,8 @@ namespace PhpX\Strings;
  */
 interface TranslatorInterface
 {
-	/**
-	 * Translate a string into another string.
-	 */
-	public function translate(string $value): string;
+    /**
+     * Translate a string into another string.
+     */
+    public function translate(string $value): string;
 }

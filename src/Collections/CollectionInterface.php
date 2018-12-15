@@ -12,24 +12,23 @@ use Countable;
  * 	EmptiableInterface
  */
 interface CollectionInterface extends
-	IteratorAggregate,
-	Countable,
-	EmptiableInterface
+    IteratorAggregate,
+    Countable,
+    EmptiableInterface
 {
-	/**
-	 * @param ValueType $item
-	 * @return bool
-	 */
-	public function contains($item): bool;
+    /**
+     * @param ValueType $item
+     * @return bool
+     */
+    public function contains($item): bool;
 
-	/**
-	 * @param ValueType $item
-	 */
-	public function add($item);
+    /**
+     * @param ValueType $item
+     */
+    public function add($item);
 
-	/**
-	 * @param ValueType $item
-	 */
-	public function remove($item);
+    /**
+     * @param ValueType $item
+     */
+    public function remove($item);
 }
-

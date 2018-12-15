@@ -17,28 +17,27 @@ use PhpX\Strings\TranslatorInterface as Translator;
  */
 class TranslatorChain implements Translator
 {
-	/**
-	 * @var iterable<T extends Translator>
-	 */
-	private $chain;
+    /**
+     * @var iterable<T extends Translator>
+     */
+    private $chain;
 
-	/**
-	 * @param iterable<T extends Translator> $chain
-	 */
-	public function __construct(iterable $chain)
-	{
-		$this->chain = $chain;
-	}
+    /**
+     * @param iterable<T extends Translator> $chain
+     */
+    public function __construct(iterable $chain)
+    {
+        $this->chain = $chain;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function translate(string $value): string
-	{
-		foreach ($this->chain as $translator) {
-			$value = $translator->translate($value);
-		}
-		return $value;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function translate(string $value): string
+    {
+        foreach ($this->chain as $translator) {
+            $value = $translator->translate($value);
+        }
+        return $value;
+    }
 }
-

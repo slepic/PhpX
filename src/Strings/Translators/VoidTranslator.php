@@ -12,11 +12,11 @@ use PhpX\Strings\TranslatorInterface as Translator;
  */
 final class VoidTranslator implements Translator
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function translate(string $value): string
-	{
-		return $value;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function translate(string $value): string
+    {
+        return $value;
+    }
 }

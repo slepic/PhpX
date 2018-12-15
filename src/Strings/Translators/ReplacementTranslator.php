@@ -14,21 +14,20 @@ use str_replace;
  */
 final class ReplacementTranslator implements Translator
 {
-	private $subject;
-	private $needle;
+    private $subject;
+    private $needle;
 
-	public function __construct(string $subject, string $needle)
-	{
-		$this->subject = $subject;
-		$this->needle = $needle;
-	}
+    public function __construct(string $subject, string $needle)
+    {
+        $this->subject = $subject;
+        $this->needle = $needle;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function translate(string $value): string
-	{
-		return str_replace($this->needle, $value, $this->subject);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function translate(string $value): string
+    {
+        return str_replace($this->needle, $value, $this->subject);
+    }
 }
-

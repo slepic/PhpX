@@ -6,7 +6,7 @@ use PhpX\DI\ContainerInterface as Container;
 
 interface ServiceLoaderInterface
 {
-	public function canLoadService(string $serviceName): bool;
+    public function canLoadService(string $serviceName): bool;
 
-	public function loadService(string $serviceName, Container $container);
+    public function loadService(string $serviceName, Container $container);
 }

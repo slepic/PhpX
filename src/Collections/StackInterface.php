@@ -7,19 +7,19 @@ namespace PhpX\Collections;
  */
 interface StackInterface extends EmptiableInterface
 {
-	/**
-	 * @return ValueType
-	 */
-	public function top();
+    /**
+     * @return ValueType
+     */
+    public function top();
 
-	/**
-	 * @return ValueType
-	 */
-	public function pop();
+    /**
+     * @return ValueType
+     */
+    public function pop();
 
-	/**
-	 * @param ValueType $value
-	 * @return void
-	 */
-	public function push($value);
+    /**
+     * @param ValueType $value
+     * @return void
+     */
+    public function push($value);
 }

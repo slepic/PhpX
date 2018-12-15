@@ -9,24 +9,24 @@ use ArrayAccess;
 
 class CallbackArray implements ServiceLoader
 {
-	private $factories;
+    private $factories;
 
-	public function __construct(ArrayAccess $factories)
-	{
-		$this->factories = $factories;
-	}
+    public function __construct(ArrayAccess $factories)
+    {
+        $this->factories = $factories;
+    }
 
-	public function canLoadService(string $id): bool
-	{
-		return $this->factories->offsetExists($id);
-	}
+    public function canLoadService(string $id): bool
+    {
+        return $this->factories->offsetExists($id);
+    }
 
-	public function loadService($id, Container $container): object
-	{
-		$factory = $this->factories->offsetGet($id);
-		if(!is_callable($factory)) {
-			throw new InvalidTypeException("callback", $factory, 'service=' . $id);
-		}
-		return $factory($container);
-	}
+    public function loadService($id, Container $container): object
+    {
+        $factory = $this->factories->offsetGet($id);
+        if (!is_callable($factory)) {
+            throw new InvalidTypeException("callback", $factory, 'service=' . $id);
+        }
+        return $factory($container);
+    }
 }

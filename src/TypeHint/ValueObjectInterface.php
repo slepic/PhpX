@@ -7,13 +7,13 @@ namespace PhpX\TypeHint;
  */
 interface ValueObjectInterface
 {
-	/**
-	 * @return ValueType
-	 */
-	public function getValue();
+    /**
+     * @return ValueType
+     */
+    public function getValue();
 
-	/**
-	 * @param ValueType $value
-	 */
-	public function setValue($value);
+    /**
+     * @param ValueType $value
+     */
+    public function setValue($value);
 }

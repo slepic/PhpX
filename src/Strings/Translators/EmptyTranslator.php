@@ -11,11 +11,11 @@ use PhpX\Strings\TranslatorInterface as Translator;
  */
 final class EmptyTranslator implements Translator
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function translate(string $value): string
-	{
-		return '';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function translate(string $value): string
+    {
+        return '';
+    }
 }

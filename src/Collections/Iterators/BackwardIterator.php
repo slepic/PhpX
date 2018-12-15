@@ -7,34 +7,33 @@ namespace PhpX\Collections\Iterators;
  */
 class BackwardIterator extends \IteratorIterator implements TwoWayIteratorInterface
 {
-	public function __construct(TwoWayIteratorInterface $iterator)
-	{
-		parent::__construct($iterator);
-	}
+    public function __construct(TwoWayIteratorInterface $iterator)
+    {
+        parent::__construct($iterator);
+    }
 
-	public function rewind()
-	{
-		return $this->getInnerIterator()->end();
-	}
+    public function rewind()
+    {
+        return $this->getInnerIterator()->end();
+    }
 
-	public function end()
-	{
-		return $this->getInnerIterator()->rewind();
-	}
+    public function end()
+    {
+        return $this->getInnerIterator()->rewind();
+    }
 
-	public function next()
-	{
-		return $this->getInnerIterator()->prev();
-	}
+    public function next()
+    {
+        return $this->getInnerIterator()->prev();
+    }
 
-	public function prev()
-	{
-		return $this->getInnerIterator()->next();
-	}
+    public function prev()
+    {
+        return $this->getInnerIterator()->next();
+    }
 
-	public function getBackwardIterator()
-	{
-		return $this->getInnerIterator();
-	}
+    public function getBackwardIterator()
+    {
+        return $this->getInnerIterator();
+    }
 }
-

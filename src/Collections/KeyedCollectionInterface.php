@@ -12,6 +12,4 @@ use ArrayAccess;
  */
 interface KeyedCollectionInterface extends CollectionInterface, ArrayAccess, ArrayExchangableInterface
 {
-
 }
-
