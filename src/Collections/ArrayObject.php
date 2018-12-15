@@ -3,18 +3,15 @@
 namespace PhpX\Collections;
 
 use JsonSerializable;
-use ArrayAccess;
 
 /**
  * Array wrapper
  */
-class ArrayObject implements
+class ArrayObject implements //ArrayObjectInterface
 	StackInterface,
 	QueueInterface,
 	KeyedCollectionInterface,
-	ArrayAccess,
 //	ValueObject,
-//	ArrayConvertible,
 	JsonSerializable
 //	Clonable
 {
@@ -37,17 +34,15 @@ class ArrayObject implements
 	 * EmptiableInterface
 	 *********************/
 
-	public function isEmpty()
+	public function isEmpty(): bool
 	{
-		return empty($this->data);
+		return \count($this) === 0;
 	}
 
-	public function clear()
+	public function clear(): self
 	{
-		$this->data = [];
-		return $this;
+		return $this->exchangeArray([]);
 	}
-
 
 	/******************
 	 * StackInterface
@@ -63,7 +58,7 @@ class ArrayObject implements
 		return $this->removeLast();
 	}
 
-	public function push($value)
+	public function push($value): self
 	{
 		return $this->append($value);
 	}
@@ -72,7 +67,7 @@ class ArrayObject implements
 	 * QueueInterface
 	 * *******************/
 
-	public function enqueue($value)
+	public function enqueue($value): self
 	{
 		return $this->prepend($value);
 	}
@@ -86,41 +81,46 @@ class ArrayObject implements
 	 * Countable
 	 *******************/
 
-	public function count()
+	public function count(): int
 	{
 		return \count($this->data);
 	}
 
 	/****************************
-	 * ArrayConvertibleInterface
+	 * ArrayAggregateInterface
 	 ****************************/
 
-	public function toArray()
+	public function getArrayCopy(): array
 	{
 		return $this->data;
 	}
 
-	public function fromArray(array $array)
+	/****************************
+	 * ArrayExchangableInterface
+	 ****************************/
+
+	public function exchangeArray(array $array): self
 	{
 		$this->data = $array;
-	}
-
-	public function fromIterator(Traversable $iterator)
-	{
-		$this->data = [];
-		foreach($iterator as $key => $item)
-		{
-			$this->data[$key] = $item;
-		}
+		return $this;
 	}
 
 	/*********************
 	 * IteratorAggregate
 	 * *******************/
 
-	public function getIterator()
+	public function getIterator(): \Iterator
 	{
 		return new ArrayIterator($this->data);
+	}
+
+	public function fromIterator(Traversable $iterator): self
+	{
+		$this->clear();
+		foreach ($iterator as $key => $item) {
+			$this[$key] = $item;
+		}
+		return $this;
 	}
 
 	/***********************
@@ -133,41 +133,30 @@ class ArrayObject implements
 	}
 
 	/**
-	 * @param iterable $value
+	 * @param iterable|ArrayAggregateInterface $value
 	 */
-	public function setValue($value)
+	public function setValue($value): self
 	{
 		if(\is_array($value)) {
-			$this->fromArray($value);
+			return $this->exchangeArray($value);
+		} elseif ($value instanceof ArrayAggregateInterface) {
+			return $this->exchangeArray($value->getArrayCopy());
 		} else if($value instanceof Traversable) {
-			$this->fromIterator($value);
-		} else {
-			throw new InvalidTypeException('iterable', $value);
+			return $this->fromIterator($value);
 		}
-		return $this;
+		throw new InvalidTypeException(
+			'iterable|' . ArrayAggregateInterface::class,
+			$value
+		);
 	}
 
 	/***********************
 	 * JsonSerializable
 	 *************************/
 
-	public function jsonSerialize()
+	public function jsonSerialize(): array
 	{
 		return $this->data;
-	}
-
-	/*************************
-	 * ContainerInterface
-	 * **********************/
-
-	public function has($key): bool
-	{
-		return $this->offsetExists($key);
-	}
-
-	public function get($key)
-	{
-		return $this->data[$key];
 	}
 
 	/************************
@@ -179,12 +168,12 @@ class ArrayObject implements
 		return $this->indexOf($item) !== false;
 	}
 
-	public function add($item)
+	public function add($item): self
 	{
-		$this->append($item);
+		return $this->append($item);
 	}
 
-	public function remove($item)
+	public function remove($item) 
 	{
 		$key = $this->indexOf($item);
 		if($key !== false)
@@ -193,25 +182,6 @@ class ArrayObject implements
 			return true;
 		}
 		return false;
-	}
-
-	/************************
-	 * KeyedCollectionInterface
-	 * **********************/
-
-	public function indexOf($item)
-	{
-		return \array_search($item, $this->data);
-	}
-
-	public function set($key, $value)
-	{
-		$this->data[$key] = $value;
-	}
-
-	public function removeKey($key)
-	{
-		unset($this->data[$key]);
 	}
 
 	/*******************************
@@ -225,26 +195,31 @@ class ArrayObject implements
 
 	public function offsetGet($key)
 	{
-		return $this->get($key);
+		return $this->data[$key];
 	}
 
 	public function offsetSet($key, $value)
 	{
 		if($key === null) {
-			$this->push($value);
+			$this->add($value);
 		} else {
-			$this->set($key, $value);
+			$this->data[$key] = $value;
 		}
 	}
 
 	public function offsetUnset($key)
 	{
-		$this->removeKey($key);
+		unset($this->data[$key]);
 	}
 
 	/*******************
 	 * ArrayInterface
 	 * ****************/
+
+	public function indexOf($item)
+	{
+		return \array_search($item, $this->data, true);
+	}
 
 	public function keys()
 	{
@@ -274,13 +249,13 @@ class ArrayObject implements
 		return \key($this->data);
 	}
 
-	public function prepend($value)
+	public function prepend($value): self
 	{
 		\array_unshift($this->data, $value);
 		return $this;
 	}
 
-	public function prepended($value)
+	public function prepended($value): self
 	{
 		$clone = $this->getClone();
 		$clone->prepend($value);
@@ -292,7 +267,7 @@ class ArrayObject implements
 		return \array_shift($this->data);
 	}
 
-	public function append($value)
+	public function append($value): self
 	{
 		\array_push($this->data, $value);
 		return $this;
@@ -303,13 +278,13 @@ class ArrayObject implements
 		return \array_pop($this->data);
 	}
 
-	public function flip()
+	public function flip(): self
 	{
 		$this->data = \array_flip($this->data);
 		return $this;
 	}
 
-	public function flipped()
+	public function flipped(): self
 	{
 		return new self(\array_flip($this->data));
 	}
