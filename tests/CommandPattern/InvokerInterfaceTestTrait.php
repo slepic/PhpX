@@ -9,12 +9,12 @@ use \PhpX\CommandPattern\CommandInterface;
  */
 trait InvokerInterfaceTestTrait
 {
-	public function testCallExecute()
-	{
-		$command = $this->createMock(CommandInterface::class);
-		$command->expects($this->once())->method('execute');
+    public function testCallExecute()
+    {
+        $command = $this->createMock(CommandInterface::class);
+        $command->expects($this->once())->method('execute');
 
-		$invoker = $this->createInvoker();
-		$invoker->executeCommand($command);
-	}
+        $invoker = $this->createInvoker();
+        $invoker->executeCommand($command);
+    }
 }

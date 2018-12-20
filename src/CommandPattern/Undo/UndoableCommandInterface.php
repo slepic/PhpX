@@ -6,8 +6,8 @@ use \PhpX\CommandPattern\CommandInterface;
 
 interface UndoableCommandInterface extends CommandInterface
 {
-	/**
-	 * @return CommandInterface
-	 */
-	public function getUndoCommand();
+    /**
+     * @return CommandInterface
+     */
+    public function getUndoCommand();
 }

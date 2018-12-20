@@ -10,8 +10,8 @@ namespace PhpX\CommandPattern\Redo;
  */
 interface RedoableCommandInterface extends CommandInterface
 {
-	/**
-	 * @return CommandInterface
-	 */
-	public function getRedoCommand();
+    /**
+     * @return CommandInterface
+     */
+    public function getRedoCommand();
 }

@@ -7,10 +7,10 @@ use \PhpX\CommandPattern\LastInvoker;
 
 class LastInvokerTest extends TestCase
 {
-	use InvokerInterfaceTestTrait;
+    use InvokerInterfaceTestTrait;
 
-	protected function createInvoker()
-	{
-		return new LastInvoker();
-	}
+    protected function createInvoker()
+    {
+        return new LastInvoker();
+    }
 }
