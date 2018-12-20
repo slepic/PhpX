@@ -14,12 +14,12 @@ class Chain implements ServiceLoader
         $this->chain = $chain;
     }
 
-    public function canLoadService($id): bool
+    public function canLoadService(string $id): bool
     {
         return $this->getLoader($id) !== null;
     }
 
-    public function loadService($id, Container $container): object
+    public function loadService(string $id, Container $container)
     {
         $loader = $this->getLoader($id);
         if ($loader !== null) {
