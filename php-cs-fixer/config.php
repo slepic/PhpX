@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 \exec('git diff --cached --name-only', $output, $exitCode);
 
@@ -17,4 +17,15 @@ $output = \array_map(function ($item) {
 
 $config = PhpCsFixer\Config::create();
 $config->setFinder($output);
+
+if (\count($output) > 0) {
+    echo 'Gonna check these files for code style errors:' . \PHP_EOL;
+    foreach ($output as $file) {
+        echo $file->getFilename() . \PHP_EOL;
+    }
+} else {
+    echo "No PHP files to check.";
+}
+echo \PHP_EOL;
+
 return $config;

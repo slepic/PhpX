@@ -14,17 +14,32 @@
 	},
    "scripts" : {
        "test": [
-           "vendor/bin/phpunit"
+           "vendor/bin/phpunit --colors=always"
        ],
        "pre-commit" : [
-           "vendor/bin/php-cs-fixer fix -vvv --dry-run --config php-cs-fixer.config.php",
-           "vendor/bin/phpunit"
+           "composer check-staged-cs",
+           "composer test"
+       ],
+       "fix-staged-cs" : [
+           "vendor/bin/php-cs-fixer fix -vvv --ansi --config php-cs-fixer/config.php"
        ],
        "fix-cs" : [
-           "vendor/bin/php-cs-fixer fix -vvv --config php-cs-fixer.config.php"
+           "vendor/bin/php-cs-fixer fix -vvv --ansi --config php-cs-fixer/config.php src",
+           "vendor/bin/php-cs-fixer fix -vvv --ansi --config php-cs-fixer/config.php tests"
+       ],
+       "diff-staged-cs" : [
+           "vendor/bin/php-cs-fixer fix -vvv --dry-run --diff --ansi --config php-cs-fixer/config.php"
        ],
        "diff-cs" : [
-           "vendor/bin/php-cs-fixer fix --dry-run --diff --config php-cs-fixer.config.php"
+           "vendor/bin/php-cs-fixer fix -vvv --dry-run --diff --ansi --config php-cs-fixer/config.php src",
+           "vendor/bin/php-cs-fixer fix -vvv --dry-run --diff --ansi --config php-cs-fixer/config.php tests"
+       ],
+       "check-staged-cs" : [
+           "vendor/bin/php-cs-fixer fix -vvv --dry-run --ansi --config php-cs-fixer/config.php"
+       ],
+       "check-cs" : [
+           "vendor/bin/php-cs-fixer fix -vvv --dry-run --ansi --config php-cs-fixer/config.php src",
+           "vendor/bin/php-cs-fixer fix -vvv --dry-run --ansi --config php-cs-fixer/config.php tests"
        ]
    } 
 }
