@@ -1,4 +1,4 @@
 #!/bin/bash
 
-tests/run.sh
+vendor/bin/phpunit
 exit $?
