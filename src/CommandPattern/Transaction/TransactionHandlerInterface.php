@@ -7,18 +7,18 @@ namespace PhpX\CommandPattern\Transaction;
  */
 interface TransactionHandlerInterface
 {
-	/**
-	 * @return void
-	 */
-	public function startTransaction();
+    /**
+     * @return void
+     */
+    public function startTransaction();
 
-	/**
-	 * @return void
-	 */
-	public function commitTransaction();
+    /**
+     * @return void
+     */
+    public function commitTransaction();
 
-	/**
-	 * @return void
-	 */
-	public function rollbackTransaction();
+    /**
+     * @return void
+     */
+    public function rollbackTransaction();
 }

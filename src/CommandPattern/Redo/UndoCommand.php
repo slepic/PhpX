@@ -5,22 +5,22 @@
  */
 class ReadoableUndoCommand implements ReadoableCommandInterface
 {
-	private $command;
+    private $command;
 
-	public function __construct(CommandInterface $command)
-	{
-		$this->command = $command;
-	}
+    public function __construct(CommandInterface $command)
+    {
+        $this->command = $command;
+    }
 
-	public function execute()
-	{
-		$this->command->undo();
-	}
+    public function execute()
+    {
+        $this->command->undo();
+    }
 
-	public function getRedoCommand()
-	{
-		return $this->command;
-	}
+    public function getRedoCommand()
+    {
+        return $this->command;
+    }
 }
 
 /**
@@ -28,17 +28,17 @@ class ReadoableUndoCommand implements ReadoableCommandInterface
  */
 class RedoCommand implements CommandInterface, RedoableInterface
 {
-	private $command;
+    private $command;
 
-	public function __construct(ReadoableInterface $command)
-	{
-		$this->command = $command;
-	}
+    public function __construct(ReadoableInterface $command)
+    {
+        $this->command = $command;
+    }
 
-	public function execute()
-	{
-		$this->command->redo();
-	}
+    public function execute()
+    {
+        $this->command->redo();
+    }
 }
 
 /**
@@ -46,8 +46,8 @@ class RedoCommand implements CommandInterface, RedoableInterface
  */
 class UndoableRedoCommand extends RedoCommand implements UndoableCommandInterface
 {
-	public function getUndoCommand()
-	{
-		return $this->command;
-	}
+    public function getUndoCommand()
+    {
+        return $this->command;
+    }
 }
