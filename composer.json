@@ -15,6 +15,16 @@
    "scripts" : {
        "test": [
            "vendor/bin/phpunit"
+       ],
+       "pre-commit" : [
+           "vendor/bin/php-cs-fixer fix -vvv --dry-run --config php-cs-fixer.config.php",
+           "vendor/bin/phpunit"
+       ],
+       "fix-cs" : [
+           "vendor/bin/php-cs-fixer fix -vvv --config php-cs-fixer.config.php"
+       ],
+       "diff-cs" : [
+           "vendor/bin/php-cs-fixer fix --dry-run --diff --config php-cs-fixer.config.php"
        ]
    } 
 }
