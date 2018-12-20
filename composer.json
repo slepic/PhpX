@@ -11,5 +11,10 @@
 	"require-dev": {
 		"phpunit/phpunit" : "*",
 		"friendsofphp/php-cs-fixer": "^2.13"
-	} 
+	},
+   "scripts" : {
+       "test": [
+           "vendor/bin/phpunit"
+       ]
+   } 
 }

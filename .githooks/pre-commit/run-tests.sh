@@ -1,4 +1,4 @@
 #!/bin/bash
 
-vendor/bin/phpunit
+composer test
 exit $?
