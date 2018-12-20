@@ -19,7 +19,7 @@ class Chain implements ServiceLoader
         return $this->getLoader($id) !== null;
     }
 
-    public function loadService($id, Container $container): object
+    public function loadService($id, Container $container)
     {
         $loader = $this->getLoader($id);
         if ($loader !== null) {

@@ -21,7 +21,7 @@ class CallbackArray implements ServiceLoader
         return $this->factories->offsetExists($id);
     }
 
-    public function loadService($id, Container $container): object
+    public function loadService($id, Container $container)
     {
         $factory = $this->factories->offsetGet($id);
         if (!is_callable($factory)) {
