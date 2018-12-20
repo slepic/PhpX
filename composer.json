@@ -5,7 +5,9 @@
 			"PhpX\\Tests\\": "tests/"
 		}
 	},
-	"require": {},
+	"require": {
+        "php" : "^7.2"
+    },
 	"require-dev": {
 		"phpunit/phpunit" : "*",
 		"friendsofphp/php-cs-fixer": "^2.13"
