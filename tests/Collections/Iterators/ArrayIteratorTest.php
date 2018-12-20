@@ -7,10 +7,10 @@ use \PhpX\Collections\Iterators\ArrayIterator;
 
 class ArrayIteratorTest extends TestCase
 {
-	use TwoWayIteratorInterfaceTestTrait;
+    use TwoWayIteratorInterfaceTestTrait;
 
-	protected function createTwoWayIteratorInterfaceInstance(array $testData)
-	{
-		return new ArrayIterator($testData);
-	}
+    protected function createTwoWayIteratorInterfaceInstance(array $testData)
+    {
+        return new ArrayIterator($testData);
+    }
 }

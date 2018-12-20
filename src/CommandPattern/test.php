@@ -7,45 +7,45 @@ require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
 class Target
 {
-	function on()
-	{
-		echo "ON\n";
-	}
+    public function on()
+    {
+        echo "ON\n";
+    }
 
-	function off()
-	{
-		echo "OFF\n";
-	}
+    public function off()
+    {
+        echo "OFF\n";
+    }
 }
 
 class OnComm implements Undo\UndoableCommandInterface, Undo\UndoableInterface
 {
-	private $t;
+    private $t;
 
-	function __construct($t)
-	{
-		$this->t = $t;
-	}
+    public function __construct($t)
+    {
+        $this->t = $t;
+    }
 
-	public function execute()
-	{
-		$this->t->on();
-	}
+    public function execute()
+    {
+        $this->t->on();
+    }
 
-	public function canUndo()
-	{
-		return true;
-	}
+    public function canUndo()
+    {
+        return true;
+    }
 
-	public function undo()
-	{
-		$this->t->off();
-	}
+    public function undo()
+    {
+        $this->t->off();
+    }
 
-	public function getUndoCommand()
-	{
-		return new Redo\UndoCommand($this);
-	}
+    public function getUndoCommand()
+    {
+        return new Redo\UndoCommand($this);
+    }
 }
 
 $i = new LastInvoker();
@@ -62,4 +62,3 @@ $u->undo();
 \print_r($u);
 $u->redo();
 \print_r($u);
-

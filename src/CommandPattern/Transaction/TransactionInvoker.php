@@ -12,41 +12,38 @@ use \Exception;
  */
 class TransactionInvoker implements Invoker
 {
-	/**
-	 * @var TransactionHandlerInterface
-	 */
-	private $handler;
+    /**
+     * @var TransactionHandlerInterface
+     */
+    private $handler;
 
-	/**
-	 * @var Invoker
-	 */
-	private $invoker;
+    /**
+     * @var Invoker
+     */
+    private $invoker;
 
-	/**
-	 * @param TransactionHandlerInterface $handler
-	 * @param Invoker|null $invoker
-	 */
-	public function __construct(TransactionHandlerInterface $handler, Invoker $invoker = null)
-	{
-		$this->handler = $handler;
-		$this->invoker = $invoker ?: new LastInvoker();
-	}
+    /**
+     * @param TransactionHandlerInterface $handler
+     * @param Invoker|null $invoker
+     */
+    public function __construct(TransactionHandlerInterface $handler, Invoker $invoker = null)
+    {
+        $this->handler = $handler;
+        $this->invoker = $invoker ?: new LastInvoker();
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function executeCommand(Command $command)
-	{
-		$this->handler->startTransaction();
-		try {
-			$this->invoker->executeCommand($command);
-		} catch (Exception $e) {
-			$this->handler->rollbackTransaction();
-			throw $e;
-		}
-		$this->handler->commitTransaction();
-	}
-
-
+    /**
+     * {@inheritdoc}
+     */
+    public function executeCommand(Command $command)
+    {
+        $this->handler->startTransaction();
+        try {
+            $this->invoker->executeCommand($command);
+        } catch (Exception $e) {
+            $this->handler->rollbackTransaction();
+            throw $e;
+        }
+        $this->handler->commitTransaction();
+    }
 }
-
