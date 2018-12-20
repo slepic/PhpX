@@ -9,6 +9,30 @@ use ArrayAccess;
 
 class ArrayMapTranslatorTest extends TestCase
 {
+    public function testConstructor()
+    {
+        $array = $this->createMock(ArrayAccess::class);
+        $fallback = $this->createMock(Translator::class);
+        $translator = new ArrayMapTranslator($array, $fallback);
+        $this->assertSame($array, $translator->getMap());
+        $this->assertSame($fallback, $translator->getFallback());
+    }
+
+    public function testDefaultFallbackConstructor()
+    {
+        $array = $this->createMock(ArrayAccess::class);
+        $translator = new ArrayMapTranslator($array);
+        $this->assertSame($array, $translator->getMap());
+        $this->assertInstanceOf(Translator::class, $translator->getFallback());
+    }
+
+    public function testDefaultConstructor()
+    {
+        $translator = new ArrayMapTranslator();
+        $this->assertInstanceOf(ArrayAccess::class, $translator->getMap());
+        $this->assertInstanceOf(Translator::class, $translator->getFallback());
+    }
+
     public function testTranslatesWhatMapHas()
     {
         $testKey = \md5(\time());
