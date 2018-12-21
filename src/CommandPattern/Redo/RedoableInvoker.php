@@ -62,7 +62,7 @@ class RedoableInvoker extends InvokerDecorator implements RedoableInvokerInterfa
     {
         $command = $this->getLastUndoCommand();
         $this->getInnerInvoker()->undo();
-        if ($command instanceof ReadoableCommand) {
+        if ($command instanceof RedoableCommand) {
             $redoCommand = $command->getRedoCommand();
             $this->redoStack->push($redoCommand);
         } else {

@@ -2,6 +2,8 @@
 
 namespace PhpX\CommandPattern\Redo;
 
+use PhpX\CommandPattern\CommandInterface;
+
 /**
  * Represents a command that can be redone after being undone
  *
@@ -13,5 +15,5 @@ interface RedoableCommandInterface extends CommandInterface
     /**
      * @return CommandInterface
      */
-    public function getRedoCommand();
+    public function getRedoCommand(): CommandInterface;
 }
