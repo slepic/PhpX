@@ -2,6 +2,8 @@
 
 namespace PhpX\CommandPattern\Undo;
 
+use PhpX\CommandPattern\CommandInterface;
+
 /**
  * This is basic undo implementation for UndoableCommandInterface::getUndoCommand()
  *
@@ -50,7 +52,7 @@ class UndoCommand implements CommandInterface
     /**
      * This method simply calls the Undoable's undo method.
      */
-    public function execute()
+    public function execute(): void
     {
         $this->command->undo();
     }

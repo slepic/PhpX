@@ -8,5 +8,5 @@ interface InvokerInterface
      * @param CommandInterface $command
      * @return void
      */
-    public function executeCommand(CommandInterface $command);
+    public function executeCommand(CommandInterface $command): void;
 }

@@ -2,6 +2,9 @@
 
 namespace PhpX\CommandPattern\Undo;
 
+use PhpX\CommandPattern\InvokerInterface;
+use PhpX\CommandPattern\CommandInterface;
+
 interface UndoableInvokerInterface extends InvokerInterface, UndoableInterface
 {
     /**
@@ -11,5 +14,5 @@ interface UndoableInvokerInterface extends InvokerInterface, UndoableInterface
      *
      * @return CommandInterface
      */
-    public function getLastUndoCommand();
+    public function getLastUndoCommand(): CommandInterface;
 }

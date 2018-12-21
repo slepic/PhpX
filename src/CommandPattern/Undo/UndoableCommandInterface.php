@@ -9,5 +9,5 @@ interface UndoableCommandInterface extends CommandInterface
     /**
      * @return CommandInterface
      */
-    public function getUndoCommand();
+    public function getUndoCommand(): CommandInterface;
 }

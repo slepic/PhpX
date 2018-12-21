@@ -7,10 +7,10 @@ interface UndoableInterface
     /**
      * @return bool
      */
-    public function canUndo();
+    public function canUndo(): bool;
 
     /**
      * @return void
      */
-    public function undo();
+    public function undo(): void;
 }

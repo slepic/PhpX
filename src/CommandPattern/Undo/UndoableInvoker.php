@@ -2,37 +2,38 @@
 
 namespace PhpX\CommandPattern\Undo;
 
-use PhpX\CommandPattern\CommandInterface;
-use PhpX\CommandPattern\InvokerInterface;
-use PhpX\CommandPattern\LastInvoker;
-use PhpX\Collections\StackInterface;
-use PhpX\Collections\Stack;
-use PhpX\CommandPattern\Undo\UndoableInterface;
-use PhpX\CommandPattern\Undo\UndoableCommandInterface;
+use PhpX\CommandPattern\CommandInterface as Command;
+use PhpX\CommandPattern\InvokerInterface as Invoker;
+use PhpX\CommandPattern\InvokerDecorator;
+use PhpX\Collections\StackInterface as Stack;
+use PhpX\Collections\ArrayObject as DefaultStack;
+use PhpX\CommandPattern\Undo\UndoableCommandInterface as UndoableCommand;
+use PhpX\CommandPattern\Undo\UndoableInvokerInterface;
 
-class UndoableInvoker implements InvokerInterface, UndoableInterface
+/**
+ * Basic implementation of undoable invoker.
+ */
+class UndoableInvoker extends InvokerDecorator implements UndoableInvokerInterface
 {
-    private $invoker;
+    /**
+     * @var Stack
+     */
     private $undoStack;
 
-    public function __construct(InvokerInterface $invoker = null, StackInterface $undoStack = null)
+    /**
+     * @param Invoker|null $invoker
+     * @param Stack|null $stack
+     */
+    public function __construct(Invoker $invoker = null, Stack $undoStack = null)
     {
-        $this->invoker = $invoker ?: new LastInvoker();
-        $this->undoStack = $undoStack ?: new Stack();
+        parent::__construct($invoker);
+        $this->undoStack = $undoStack ?: new DefaultStack();
     }
 
     /**
-     * @return InvokerInterface
+     * @return Stack
      */
-    public function getInnerInvoker()
-    {
-        return $this->invoker;
-    }
-
-    /**
-     * @return StackInterface
-     */
-    public function getUndoStack()
+    public function getUndoStack(): Stack
     {
         return $this->undoStack;
     }
@@ -44,14 +45,11 @@ class UndoableInvoker implements InvokerInterface, UndoableInterface
      *
      * The execution of the command is delegated to the inner invoker.
      */
-    public function executeCommand(CommandInterface $command)
+    public function executeCommand(Command $command): void
     {
-        $this->invoker->executeCommand($command);
-        if ($command instanceof UndoableCommandInterface) {
+        parent::executeCommand($command);
+        if ($command instanceof UndoableCommand) {
             $undoCommand = $command->getUndoCommand();
-            if (!$undoCommand instanceof CommandInterface) {
-                throw new UnexpectedTypeException($undoCommand, CommandInterface::class);
-            }
             $this->undoStack->push($undoCommand);
         }
     }
@@ -59,7 +57,7 @@ class UndoableInvoker implements InvokerInterface, UndoableInterface
     /**
      * {@inheritdoc}
      */
-    public function canUndo()
+    public function canUndo(): bool
     {
         return $this->undoStack->isEmpty() === false;
     }
@@ -71,10 +69,18 @@ class UndoableInvoker implements InvokerInterface, UndoableInterface
      *
      * The undo command remains on stack if it's execution throws an Exception.
      */
-    public function undo()
+    public function undo(): void
     {
         $command = $this->undoStack->top();
-        $this->invoker->executeCommand($command);
+        parent::executeCommand($command);
         $this->undoStack->pop();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLastUndoCommand(): Command
+    {
+        return $this->undoStack->top();
     }
 }
