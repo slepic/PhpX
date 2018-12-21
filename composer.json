@@ -1,45 +1,50 @@
 {
-	"autoload": {
-		"psr-4": {
-			"PhpX\\": "src/",
-			"PhpX\\Tests\\": "tests/"
-		}
-	},
-	"require": {
-        "php" : "^7.2"
+    "autoload": {
+        "psr-4": {
+            "PhpX\\": "src/",
+            "PhpX\\Tests\\": "tests/"
+        }
     },
-	"require-dev": {
-		"phpunit/phpunit" : "*",
-		"friendsofphp/php-cs-fixer": "^2.13"
-	},
-   "scripts" : {
-       "test": [
-           "vendor/bin/phpunit --colors=always"
-       ],
-       "pre-commit" : [
-           "composer check-staged-cs",
-           "composer test"
-       ],
-       "fix-staged-cs" : [
-           "vendor/bin/php-cs-fixer fix -vvv --ansi --config php-cs-fixer/config.php"
-       ],
-       "fix-cs" : [
-           "vendor/bin/php-cs-fixer fix -vvv --ansi --config php-cs-fixer/config.php src",
-           "vendor/bin/php-cs-fixer fix -vvv --ansi --config php-cs-fixer/config.php tests"
-       ],
-       "diff-staged-cs" : [
-           "vendor/bin/php-cs-fixer fix -vvv --dry-run --diff --ansi --config php-cs-fixer/config.php"
-       ],
-       "diff-cs" : [
-           "vendor/bin/php-cs-fixer fix -vvv --dry-run --diff --ansi --config php-cs-fixer/config.php src",
-           "vendor/bin/php-cs-fixer fix -vvv --dry-run --diff --ansi --config php-cs-fixer/config.php tests"
-       ],
-       "check-staged-cs" : [
-           "vendor/bin/php-cs-fixer fix -vvv --dry-run --ansi --config php-cs-fixer/config.php"
-       ],
-       "check-cs" : [
-           "vendor/bin/php-cs-fixer fix -vvv --dry-run --ansi --config php-cs-fixer/config.php src",
-           "vendor/bin/php-cs-fixer fix -vvv --dry-run --ansi --config php-cs-fixer/config.php tests"
-       ]
-   } 
+    "require": {
+        "php": "^7.2"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.13",
+        "phpunit/phpunit": "*"
+    },
+    "scripts": {
+        "check-cs": [
+            "vendor/bin/php-cs-fixer fix -vvv --dry-run --ansi --config php-cs-fixer/config.php src",
+            "vendor/bin/php-cs-fixer fix -vvv --dry-run --ansi --config php-cs-fixer/config.php tests"
+        ],
+        "check-staged-cs": [
+            "vendor/bin/php-cs-fixer fix -vvv --dry-run --ansi --config php-cs-fixer/config.php"
+        ],
+        "diff-cs": [
+            "vendor/bin/php-cs-fixer fix -vvv --dry-run --diff --ansi --config php-cs-fixer/config.php src",
+            "vendor/bin/php-cs-fixer fix -vvv --dry-run --diff --ansi --config php-cs-fixer/config.php tests"
+        ],
+        "diff-staged-cs": [
+            "vendor/bin/php-cs-fixer fix -vvv --dry-run --diff --ansi --config php-cs-fixer/config.php"
+        ],
+        "fix-cs": [
+            "vendor/bin/php-cs-fixer fix -vvv --ansi --config php-cs-fixer/config.php src",
+            "vendor/bin/php-cs-fixer fix -vvv --ansi --config php-cs-fixer/config.php tests"
+        ],
+        "fix-json": [
+            "mv composer.json composer.json.bck",
+            "cat composer.json.bck | python -mjson.tool > composer.json",
+            "diff composer.json.bck composer.json -u && rm composer.json.bck"
+        ],
+        "fix-staged-cs": [
+            "vendor/bin/php-cs-fixer fix -vvv --ansi --config php-cs-fixer/config.php"
+        ],
+        "pre-commit": [
+            "composer check-staged-cs",
+            "composer test"
+        ],
+        "test": [
+            "vendor/bin/phpunit --colors=always"
+        ]
+    }
 }
