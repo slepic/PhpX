@@ -5,9 +5,6 @@ namespace PhpX\Tests\CommandPattern\Undo;
 use PhpX\CommandPattern\Undo\UndoableInvokerInterface as UndoableInvoker;
 use PhpX\CommandPattern\Undo\UndoableCommandInterface as UndoableCommand;
 use PhpX\CommandPattern\CommandInterface as Command;
-use PhpX\CommandPattern\InvokerInterface as Invoker;
-use PhpX\Collections\StackInterface as Stack;
-use PhpX\Tests\CommandPattern\InvokerInterfaceTestTrait;
 
 trait UndoableInvokerInterfaceTestTrait
 {

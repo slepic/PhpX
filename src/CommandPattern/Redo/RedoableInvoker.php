@@ -2,10 +2,20 @@
 
 namespace PhpX\CommandPattern\Redo;
 
+use PhpX\CommandPattern\Redo\RedoableInvokerInterface;
+use PhpX\CommandPattern\Redo\RedoableCommandInterface as RedoableCommand;
+use PhpX\CommandPattern\CommandInterface as Command;
+use PhpX\CommandPattern\InvokerInterface as Invoker;
+use PhpX\CommandPattern\InvokerDecorator;
+use PhpX\CommandPattern\Undo\UndoableInvokerInterface as UndoableInvoker;
+use PhpX\CommandPattern\Undo\UndoableInvoker as DefaultUndoableInvoker;
+use PhpX\Collections\StackInterface as Stack;
+use PhpX\Collections\ArrayObject as DefaultStack;
+
 /**
  * This invoker wraps an UndoableInvoker to provide redo capability
  */
-class RedoableInvoker implements RedoableInvokerInterface
+class RedoableInvoker extends InvokerDecorator implements RedoableInvokerInterface
 {
     private $invoker;
     private $redoStack;
@@ -14,44 +24,46 @@ class RedoableInvoker implements RedoableInvokerInterface
      * @param InvokerInterface|null $invoker If the invoker is not UndoableInvokerInterface it gets wrapped in the default one
      * @param StackInterface|null $redoStack
      */
-    public function __construct(InvokerInterface $invoker = null, StackInterface $redoStack = null)
+    public function __construct(Invoker $invoker = null, Stack $redoStack = null)
     {
-        if (!$invoker instanceof UndoableInvokerInterface) {
-            $invoker = new UndoableInvoker($invoker);
+        if (!$invoker instanceof UndoableInvoker) {
+            $invoker = new DefaultUndoableInvoker($invoker);
         }
-        $this->invoker = $invoker;
-        $this->redoStack = $stack ?: new Stack();
+        parent::__construct($invoker);
+        $this->redoStack = $redoStack ?: new DefaultStack();
+    }
+
+    public function getRedoStack(): Stack
+    {
+        return $this->redoStack;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function executeCommand($command)
+    public function executeCommand(Command $command): void
     {
         $this->redoStack->clear();
-        $this->invoker->executeCommand($command);
+        parent::executeCommand($command);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function canUndo()
+    public function canUndo(): bool
     {
-        return $this->invoker->canUndo();
+        return $this->getInnerInvoker()->canUndo();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function undo()
+    public function undo(): void
     {
-        $command = $this->invoker->getLastUndoCommand();
-        $this->invoker->undo();
-        if ($command instanceof ReadoableCommandInterface) {
+        $command = $this->getLastUndoCommand();
+        $this->getInnerInvoker()->undo();
+        if ($command instanceof ReadoableCommand) {
             $redoCommand = $command->getRedoCommand();
-            if (!$redoCommand instanceof CommandInterface) {
-                throw new UnexpectedTypeException($redoCommand, CommandInterface::class);
-            }
             $this->redoStack->push($redoCommand);
         } else {
             $this->redoStack->clear();
@@ -61,15 +73,15 @@ class RedoableInvoker implements RedoableInvokerInterface
     /**
      * {@inheritdoc}
      */
-    public function getLastUndoCommand()
+    public function getLastUndoCommand(): Command
     {
-        return $this->invoker->getLastUndoCommand();
+        return $this->getInnerInvoker()->getLastUndoCommand();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function canRedo()
+    public function canRedo(): bool
     {
         return $this->redoStack->isEmpty() === false;
     }
@@ -77,17 +89,17 @@ class RedoableInvoker implements RedoableInvokerInterface
     /**
      * {@inheritdoc}
      */
-    public function redo()
+    public function redo(): void
     {
         $command = $this->redoStack->top();
-        $this->invoker->execute($command);
+        parent::executeCommand($command);
         $this->redoStack->pop();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getLastRedoCommand()
+    public function getLastRedoCommand(): Command
     {
         return $this->redoStack->top();
     }
