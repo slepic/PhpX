@@ -4,6 +4,7 @@ namespace PhpX\Tests\CommandPattern\Undo;
 
 use PHPUnit\Framework\TestCase;
 use PhpX\CommandPattern\Undo\UndoableInvoker;
+use PhpX\CommandPattern\CommandInterface as Command;
 use PhpX\CommandPattern\Undo\UndoableCommandInterface as UndoableCommand;
 use PhpX\CommandPattern\InvokerInterface as Invoker;
 use PhpX\Collections\StackInterface as Stack;
@@ -51,7 +52,16 @@ class UndoableInvokerTest extends TestCase
 
     public function testCanExecuteCommandAndPassTheStackToAnotherInvoker()
     {
+        $undoCommand = $this->createMock(Command::class);
+        $undoCommand->expects($this->once())
+            ->method('execute');
         $command = $this->createMock(UndoableCommand::class);
+        $command->method('getUndoCommand')
+            ->willReturn($undoCommand);
+        $command->expects($this->once())
+            ->method('execute');
+        $command->expects($this->once())
+            ->method('getUndoCommand');
         $invoker = new UndoableInvoker();
         $this->assertFalse($invoker->canUndo());
         $invoker->executeCommand($command);
