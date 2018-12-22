@@ -111,7 +111,11 @@ class Example1Test extends TestCase
     public function test1()
     {
         $invoker = new RedoableInvoker();
-        $switch = new TestSwitch();
+        $switch = $this->createMock(TestSwitch::class);
+        $switch->expects($this->exactly(6))
+            ->method('on');
+        $switch->expects($this->exactly(6))
+            ->method('off');
 
         $onCommand = new OnCommand($switch);
         $invoker->executeCommand($onCommand);
@@ -133,7 +137,13 @@ class Example1Test extends TestCase
     public function test2()
     {
         $invoker = new RedoableInvoker();
-        $switch = new TestSwitch();
+        $switch = $this->createMock(TestSwitch::class);
+        $switch->method('isOn')
+            ->willReturnOnConsecutiveCalls(false, true, false, true, false, true, false, true);
+        $switch->expects($this->exactly(3))
+            ->method('on');
+        $switch->expects($this->exactly(3))
+            ->method('off');
 
         $onCommand = new OnOffCommand($switch);
         $invoker->executeCommand($onCommand);
