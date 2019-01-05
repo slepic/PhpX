@@ -5,12 +5,8 @@ namespace PhpX\Collections;
 /**
  * Represents object that can be cleared off its contents.
  */
-interface EmptiableInterface
+interface EmptiableInterface extends UnderflowableInterface
 {
-    /**
-     * @return bool
-     */
-    public function isEmpty();
 
     /**
      * @return void

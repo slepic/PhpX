@@ -28,16 +28,24 @@ class InvalidTypeException extends Exception
     private $additionalMessage;
 
     /**
-     * @param string $expectedType
+     * @param string|iterable<string> $expectedType
      * @param mixed $value
      * @param string|null $additionalMessage
      * @param int $code
      * @param \Exception|null $previous
      */
-    public function __construct($expectedType, $value, $additionalMessage = null, $code = 0, \Exception $previous = null)
+    public function __construct($expectedType, $value, ?string $additionalMessage = null, $code = 0, \Exception $previous = null)
     {
         if (!\is_string($expectedType)) {
-            throw new self('string', $expectedType, null, 0, $previous);
+            if ($expectedType instanceof \Traversable) {
+                $expectedType = \iterator_to_array($expectedType);
+            }
+            if (\is_array($expectedType)) {
+                $expectedType = \implode('|', $expectedType);
+            }
+            if (!\is_string($expectedType)) {
+                throw new self('string|iterable<string>', $expectedType, null, 0, $previous);
+            }
         }
         if ($additionalMessage !== null && !\is_string($additionalMessage)) {
             throw new self('string|null', $expectedType, null, 0, $previous);
