@@ -54,7 +54,14 @@ class SimpleFactorizer implements FactorizerInterface
             return $factors;
         }
         $current = $value;
+        $previousPrime = 1;
         foreach ($this->primes as $prime) {
+            if (!\is_int($prime)) {
+                $this->generatorError($value, $current, $factors, $prime, $previousPrime, 'Primes generator returned non integer.');
+            }
+            if ($prime <= $previousPrime) {
+                $this->generatorError($value, $current, $factors, $prime, $previousPrime, 'Got primes in non ascending order.');
+            }
             if ($prime <= $current) {
                 while ($current % $prime === 0) {
                     $factors->add($prime);
@@ -64,19 +71,28 @@ class SimpleFactorizer implements FactorizerInterface
                     $current /= $prime;
                 }
             } else {
-                $this->generatorError($value, $current, $factors, 'Skipped some prime number.');
+                $this->generatorError($value, $current, $factors, $prime, $previousPrime, 'Skipped some prime number.');
             }
+            $previousPrime = $prime;
         }
-        $this->generatorError($value, $current, $factors, 'Out of prime numbers.');
+        $this->generatorError($value, $current, $factors, $prime, $previousPrime, 'Out of prime numbers.');
     }
 
-    private function generatorError(int $value, int $current, PrimeFactorsBuilderInterface $factors, string $message = null)
-    {
+    private function generatorError(
+        int $value,
+        int $current,
+        PrimeFactorsBuilderInterface $factors,
+        $prime,
+        int $previousPrime,
+        string $message = null
+    ) {
         throw new Exception(
             'Primes generator error' . (empty($message) ? '.' : (': ' . $message)) . \PHP_EOL
             . 'Factorizer: ' . \print_r($this, true)
-            . 'Factorized value: ' . \print_r($value, true) . \PHP_EOL
-            . 'Current reduced value: ' . \print_r($current, true) . \PHP_EOL
+            . 'Factorized value: ' . $value . \PHP_EOL
+            . 'Current reduced value: ' . $current . \PHP_EOL
+            . 'Prime: ' . \print_r($prime, true) . \PHP_EOL
+            . 'Previous prime: ' . $previousPrime . \PHP_EOL
             . 'Current factors: ' . \print_r($factors, true)
         );
     }
